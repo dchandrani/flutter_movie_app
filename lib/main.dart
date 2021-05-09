@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_app/core/api_client.dart';
-import 'package:flutter_movie_app/data/data_sources/movie_remote_data_source.dart';
-import 'package:http/http.dart';
+import 'package:flutter_movie_app/domain/entities/no_params.dart';
+import 'package:flutter_movie_app/domain/usecases/get_trending.dart';
+import 'package:pedantic/pedantic.dart';
 
-void main() {
-  final apiClient = ApiClient(Client());
-  MovieRemoteDataSource movieRemoteDataSource =
-      MovieRemoteDataSourceImpl(apiClient);
-  movieRemoteDataSource.getTrending();
-  movieRemoteDataSource.getPopular();
-  movieRemoteDataSource.getComingSoon();
-  movieRemoteDataSource.getPlayingNow();
+import 'di/get_it.dart' as getIt;
+
+void main() async {
+  unawaited(getIt.init());
+
+  final GetTrending getTrending = getIt.getItInstance<GetTrending>();
+
+  final response = await getTrending(NoParams());
+
+  response.fold(
+    (l) {
+      print('error');
+      print(l);
+    },
+    (r) {
+      print('list of movies');
+      print(r);
+    },
+  );
+
   runApp(MyApp());
 }
 
