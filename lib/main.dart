@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_app/core/api_client.dart';
+import 'package:flutter_movie_app/data/data_sources/movie_remote_data_source.dart';
+import 'package:http/http.dart';
 
 void main() {
+  final apiClient = ApiClient(Client());
+  MovieRemoteDataSource movieRemoteDataSource =
+      MovieRemoteDataSourceImpl(apiClient);
+  movieRemoteDataSource.getTrending();
+  movieRemoteDataSource.getPopular();
+  movieRemoteDataSource.getComingSoon();
+  movieRemoteDataSource.getPlayingNow();
   runApp(MyApp());
 }
 
