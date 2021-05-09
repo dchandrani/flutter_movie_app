@@ -6,29 +6,59 @@ import 'package:flutter_movie_app/domain/usecases/get_coming_soon.dart';
 import 'package:flutter_movie_app/domain/usecases/get_playing_now.dart';
 import 'package:flutter_movie_app/domain/usecases/get_popular.dart';
 import 'package:flutter_movie_app/domain/usecases/get_trending.dart';
+import 'package:flutter_movie_app/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 final getItInstance = GetIt.I;
 
 Future init() async {
-  getItInstance.registerLazySingleton<Client>(() => Client());
+  getItInstance.registerLazySingleton<Client>(
+    () => Client(),
+  );
 
-  getItInstance
-      .registerLazySingleton<ApiClient>(() => ApiClient(getItInstance()));
+  getItInstance.registerLazySingleton<ApiClient>(
+    () => ApiClient(
+      getItInstance(),
+    ),
+  );
 
   getItInstance.registerLazySingleton<MovieRemoteDataSource>(
-      () => MovieRemoteDataSourceImpl(getItInstance()));
+    () => MovieRemoteDataSourceImpl(
+      getItInstance(),
+    ),
+  );
 
-  getItInstance
-      .registerLazySingleton<GetTrending>(() => GetTrending(getItInstance()));
-  getItInstance
-      .registerLazySingleton<GetPopular>(() => GetPopular(getItInstance()));
+  getItInstance.registerLazySingleton<GetTrending>(
+    () => GetTrending(
+      getItInstance(),
+    ),
+  );
+  getItInstance.registerLazySingleton<GetPopular>(
+    () => GetPopular(
+      getItInstance(),
+    ),
+  );
   getItInstance.registerLazySingleton<GetComingSoon>(
-      () => GetComingSoon(getItInstance()));
+    () => GetComingSoon(
+      getItInstance(),
+    ),
+  );
   getItInstance.registerLazySingleton<GetPlayingNow>(
-      () => GetPlayingNow(getItInstance()));
+    () => GetPlayingNow(
+      getItInstance(),
+    ),
+  );
 
   getItInstance.registerLazySingleton<MovieRepository>(
-      () => MovieRepositoryImpl(getItInstance()));
+    () => MovieRepositoryImpl(
+      getItInstance(),
+    ),
+  );
+
+  getItInstance.registerFactory(
+    () => MovieCarouselBloc(
+      getTrending: getItInstance(),
+    ),
+  );
 }
