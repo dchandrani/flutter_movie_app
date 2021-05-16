@@ -40,6 +40,7 @@ class MovieModel extends MovieEntity {
           releaseDate: releaseDate,
           voteAverage: voteAverage,
           overview: overview,
+          posterPath: posterPath,
         );
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
